@@ -35,14 +35,14 @@ We need to create an SSH key pair that will be used to authenticate your local m
 
    ```bash
    ssh-keygen -t ed25519 -C "your_email@example.com"
-```
-Replace "your_email@example.com" with your actual email address associated with your GitHub account.
+   ```
+   Replace "your_email@example.com" with your actual email address associated with your GitHub account.
 
 3. You will be prompted to choose a location to save the SSH key. Press **Enter** to accept the default location:
 
-```bash
-    Enter file in which to save the key (/home/your_user/.ssh/id_ed25519):
-```
+   ```bash
+      Enter file in which to save the key (/home/your_user/.ssh/id_ed25519):
+   ```
 4. **Passphrase (optional but highly recommended)**: You can add a passphrase for extra security, or press **Enter** to skip.
 
 **Windows Specific Issues**
