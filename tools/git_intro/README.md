@@ -26,6 +26,12 @@ node_modules/
 
 # Ignore environment files
 .env
+
+# Ignore a specific subdirectory and its contents
+logs/archive/
+
+# Ignore files with a specific pattern in the filename
+temp_file_*.txt
 ```
 ## **Setting Up `.gitignore` in Visual Studio Code**
 Follow these steps to create and configure a `.gitignore` file in Visual Studio Code:
