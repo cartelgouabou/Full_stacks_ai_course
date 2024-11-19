@@ -68,7 +68,7 @@ Follow these steps to create and configure a `.gitignore` file in Visual Studio 
 - **Update Regularly**: Adjust your `.gitignore` as the project evolves and new files need to be excluded.
 - **Verify Exclusions**: Use the `git status` command to verify that ignored files are not tracked.
 
-  ## **Example for a python projects**
+## **Example of a `.gitignore` for a python projects**
   ```plaintext
   # Compiled files
   *.pyc
