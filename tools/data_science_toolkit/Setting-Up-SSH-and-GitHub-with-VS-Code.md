@@ -38,11 +38,7 @@ We need to create an SSH key pair that will be used to authenticate your local m
    ```
    Replace "your_email@example.com" with your actual email address associated with your GitHub account.
 
-3. You will be prompted to choose a location to save the SSH key. Press **Enter** to accept the default location:
-
-   ```bash
-      Enter file in which to save the key (/home/your_user/.ssh/id_ed25519):
-   ```
+3. You will be prompted to choose a location to save the SSH key. Press **Enter** to accept the default location
 4. **Passphrase (optional but highly recommended)**: You can add a passphrase for extra security, or press **Enter** to skip.
 
 **Windows Specific Issues**
@@ -87,11 +83,11 @@ Now that the SSH key is generated and added to the agent, we need to add the pub
 1. Copy the SSH public key to your clipboard:
 - On macOS/Linux:
 ```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
+cat ~/.ssh/id_ed25519.pub
 ```
 - On Windows, run the following in PowerShell (Administrator):
 ```bash
-Get-Content C:\Users\your_user\.ssh\id_ed25519.pub | clip
+cat C:\Users\your_user\.ssh\id_ed25519.pub 
 ```
 2. Go to GitHub and log in to your account.
 
