@@ -8,6 +8,16 @@ dataset_*/
 .env
 .env/
 .env/*
+.venv*
+.venv*/
+.venv*/*
+.env*
+.env*/
+.env*/*
+*/.venv*/*
+*/*/.venv*/*
+*/*/*/.venv*/*
+
 
 # Ignore PowerPoint files
 *.ppt
