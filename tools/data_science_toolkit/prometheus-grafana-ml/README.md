@@ -19,12 +19,17 @@ prometheus-grafana-mlops
 |├── app
 |   ├── app.py           # Streamlit app
 |   └── model.py         # Sentiment analysis model logic
-|├── monitoring
+|├── grafana
+|   ├── Dockerfile.grafana  # Dockerfile for Grafana
+|   └── run_grafana.sh      # Bash script to build and run Grafana docker container
+|├── prometheus
 |   ├── prometheus.yml   # Prometheus configuration
 |   ├── Dockerfile.prometheus  # Dockerfile for Prometheus
-|   └── Dockerfile.grafana      # Dockerfile for Grafana
+|   └── run_prometheus.sh      # Bash script to build and run Prometheus docker container
 |├── .gitignore
-|└── requirements.txt   # Python dependencies
+|├── README.md
+|├── requirements.txt   # Python dependencies
+|└── run_pipeline.sh   # Bash script to run the entire pipeline
 ```
 
 ---
@@ -34,8 +39,17 @@ prometheus-grafana-mlops
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/prometheus-grafana-mlops.git
-   cd prometheus-grafana-mlops
+   # 1. Clone the repository with sparse checkout mode in order to retrieve only the prometheus-grafana-ml repo
+    git clone --no-checkout https://github.com/your-username/Full_stacks_ai_course.git
+    cd Full_stacks_ai_course
+    git sparse-checkout init --cone
+    git sparse-checkout set tools/data_science_toolkit/prometheus-grafana-ml
+    git checkout main
+
+    # 2. Move the folder and remove unnecessary files
+    mv tools/data_science_toolkit/prometheus-grafana-ml ../prometheus-grafana-ml
+    cd ..
+    rm -rf Full_stacks_ai_course
    ```
 
 2. **Create a virtual environment and install dependencies:**
