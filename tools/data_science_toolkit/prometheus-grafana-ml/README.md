@@ -40,7 +40,7 @@ prometheus-grafana-mlops
 
    ```bash
    # 1. Clone the repository with sparse checkout mode in order to retrieve only the prometheus-grafana-ml repo
-    git clone --no-checkout https://github.com/your-username/Full_stacks_ai_course.git
+    git clone --no-checkout https://github.com/cartelgouabou/Full_stacks_ai_course.git
     cd Full_stacks_ai_course
     git sparse-checkout init --cone
     git sparse-checkout set tools/data_science_toolkit/prometheus-grafana-ml
@@ -102,16 +102,13 @@ start_http_server(8001)  # Metrics available at http://localhost:8001/metrics
 ### **2. Defining Metrics:**
 
 ```python
-from prometheus_client import Gauge, Counter, Histogram
+from prometheus_client import Gauge, Counter
 
 # Total number of requests
 request_count_metric = Counter("ml_model_requests_total", "Total number of prediction requests")
 
 # Model accuracy
 accuracy_metric = Gauge("ml_model_accuracy", "User-reported model accuracy")
-
-# Confidence score distribution
-confidence_metric = Histogram("ml_model_confidence_scores", "Model confidence score distribution", buckets=[0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
 ```
 
 ### **3. Updating Metrics in the App:**
@@ -144,62 +141,22 @@ if feedback == "Yes":
          # For Linux, use: ['localhost:8001']
    ```
 
-2. **Create a Dockerfile for Prometheus (`monitoring/Dockerfile.prometheus`):**
-
-   ```dockerfile
-   FROM prom/prometheus
-   COPY prometheus.yml /etc/prometheus/prometheus.yml
-   ```
-
-3. **Create a Bash Script to Build and Run Prometheus (`monitoring/run_prometheus.sh`):**
+2. **Run the Bash Script `prometheus/run_prometheus.sh` from building and running prometheus container through the Dockerfile `prometheus/Dockerfile.prometheus`:**
+   
+   Make the script executable then runn:
 
    ```bash
-   #!/bin/bash
-
-   PROMETHEUS_DIR="$(pwd)/monitoring"
-   PROMETHEUS_CONFIG="$PROMETHEUS_DIR/prometheus.yml"
-
-   echo "🔍 Checking for Prometheus configuration file at: $PROMETHEUS_CONFIG"
-
-   if [ ! -f "$PROMETHEUS_CONFIG" ]; then
-       echo "❌ ERROR: prometheus.yml file not found in $PROMETHEUS_DIR"
-       exit 1
-   else
-       echo "✅ Found prometheus.yml"
-   fi
-
-   echo "⚡ Stopping existing Prometheus container (if any)..."
-   docker stop prometheus 2>/dev/null
-   docker rm prometheus 2>/dev/null
-
-   echo "🚀 Building Prometheus Docker image..."
-   docker build -t custom-prometheus -f monitoring/Dockerfile.prometheus .
-
-   echo "🚀 Starting Prometheus..."
-   docker run -d --name=prometheus -p 9090:9090 custom-prometheus
-
-   if [ $? -eq 0 ]; then
-       echo "🎉 Prometheus is now running at: http://localhost:9090"
-   else
-       echo "❌ ERROR: Failed to start Prometheus. Check Docker logs with:"
-       echo "   docker logs prometheus"
-   fi
+   chmod +x prometheus/run_prometheus.sh
+   ./prometheus/Dockerfile.prometheus
    ```
 
-   Make the script executable:
-
-   ```bash
-   chmod +x monitoring/run_prometheus.sh
-   ./monitoring/run_prometheus.sh
-   ```
-
-4. **Check if Prometheus is scraping metrics:**
+3. **Check if Prometheus is scraping metrics:**
 
    - Go to **`http://localhost:9090`**
    - Click **Status → Targets**
    - Ensure **`http://localhost:8001/metrics`** is listed and **UP**.
 
-5. **Query your metrics in Prometheus:**
+4. **Query your metrics in Prometheus:**
 
    - Enter `ml_model_accuracy` in the search bar and click **Execute**.
 
@@ -207,51 +164,29 @@ if feedback == "Yes":
 
 ## 📈 **Step 5: Configure Grafana**
 
+1. **Run the Bash Script `grafana/run_grafana.sh` from building and running grafana container through the Dockerfile `grafana/Dockerfile.grafana`:**
+   
+   Make the script executable then run:
+
+   ```bash
+   chmod +x grafana/run_grafana.sh
+   ./grafana/Dockerfile.grafana
+   ```
 1. **Create a Dockerfile for Grafana (`monitoring/Dockerfile.grafana`):**
 
    ```dockerfile
    FROM grafana/grafana
    ```
 
-2. **Create a Bash Script to Build and Run Grafana (`monitoring/run_grafana.sh`):**
-
-   ```bash
-   #!/bin/bash
-
-   echo "⚡ Stopping existing Grafana container (if any)..."
-   docker stop grafana 2>/dev/null
-   docker rm grafana 2>/dev/null
-
-   echo "🚀 Building Grafana Docker image..."
-   docker build -t custom-grafana -f monitoring/Dockerfile.grafana .
-
-   echo "🚀 Starting Grafana..."
-   docker run -d --name=grafana -p 3000:3000 custom-grafana
-
-   if [ $? -eq 0 ]; then
-       echo "🎉 Grafana is now running at: http://localhost:3000"
-   else
-       echo "❌ ERROR: Failed to start Grafana. Check Docker logs with:"
-       echo "   docker logs grafana"
-   fi
-   ```
-
-   Make the script executable:
-
-   ```bash
-   chmod +x monitoring/run_grafana.sh
-   ./monitoring/run_grafana.sh
-   ```
-
-3. **Access Grafana:**
+2. **Access Grafana:**
    Open **`http://localhost:3000`**.
 
-4. **Login to Grafana:**
+3. **Login to Grafana:**
 
    - **Username:** `admin`
    - **Password:** `admin`
 
-5. **Add Prometheus as a Data Source:**
+4. **Add Prometheus as a Data Source:**
 
    - Go to **Settings ⚙️ → Data Sources → Add Data Source**
    - Choose **Prometheus**
@@ -274,22 +209,10 @@ if feedback == "Yes":
   ml_model_accuracy
   ```
 
-- **Inference Latency:**
-
-  ```promql
-  rate(ml_model_latency_seconds_sum[5m]) / rate(ml_model_latency_seconds_count[5m])
-  ```
-
 - **Total Requests:**
 
   ```promql
   ml_model_requests_total
-  ```
-
-- **Confidence Score Distribution:**
-
-  ```promql
-  histogram_quantile(0.95, sum(rate(ml_model_confidence_scores_bucket[5m])) by (le))
   ```
 
 ### **3. Customize Visualization:**
@@ -319,36 +242,6 @@ if feedback == "Yes":
 
 ---
 
-## 🔄 **Final Automation with Bash Scripts**
-
-Create a script **`run_pipeline.sh`** to automate the process:
-
-```bash
-#!/bin/bash
-
-# Step 1: Run Streamlit App
-streamlit run app/app.py &
-
-# Step 2: Run Prometheus
-./monitoring/run_prometheus.sh
-
-# Step 3: Run Grafana
-./monitoring/run_grafana.sh
-
-echo "🚀 All services are up and running!"
-echo "- Streamlit: http://localhost:8501"
-echo "- Prometheus: http://localhost:9090"
-echo "- Grafana: http://localhost:3000"
-```
-
-Make the script executable and run:
-
-```bash
-chmod +x run_pipeline.sh
-./run_pipeline.sh
-```
-
----
 
 ## 🌟 **Conclusion**
 

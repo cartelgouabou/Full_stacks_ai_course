@@ -3,7 +3,7 @@ import pandas as pd
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-from prometheus_client import start_http_server, Gauge, Counter, Histogram
+from prometheus_client import start_http_server, Gauge, Counter
 
 from model import predict_sentiment
 
@@ -18,10 +18,6 @@ if "server_started" not in st.session_state:
 # Define a request counter
 if "request_count_metric" not in st.session_state:
     st.session_state.request_count_metric = Counter("ml_model_requests_total", "Total number of prediction requests")
-# Define a histogram for confidence scores
-if "confidence_metric" not in st.session_state:
-    st.session_state.confidence_metric = Histogram("ml_model_confidence_scores", "Distribution of model confidence scores", buckets=[0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
-
 
 # ✅ Define the Prometheus Gauge only once
 if "accuracy_metric" not in st.session_state:
@@ -60,8 +56,6 @@ if st.button("Analyze Sentiment"):
         "emoji": emoji
     }
     st.session_state.feedback_given = None  # Reset feedback state after new prediction
-    # Record confidence score for each prediction
-    st.session_state.confidence_metric.observe(confidence)
 
 # ✅ Show prediction result if available
 if st.session_state.prediction_result:
@@ -98,6 +92,7 @@ elif st.session_state.feedback_given == "no":
 # ✅ Update Prometheus metric
 if len(st.session_state.accuracy_history) > 0:
     avg_accuracy = sum(acc[1] for acc in st.session_state.accuracy_history) / len(st.session_state.accuracy_history)
+    # Update accuracy based on user feedback
     st.session_state.accuracy_metric.set(avg_accuracy)
     st.success(f"📈 Model Accuracy: {avg_accuracy:.2%}")
 
