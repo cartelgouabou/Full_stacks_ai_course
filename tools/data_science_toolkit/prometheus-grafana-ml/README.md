@@ -80,7 +80,7 @@ prometheus-grafana-mlops
 
 3. **Verify Prometheus metrics are exposed:**
    Visit **`http://localhost:8001/metrics`** to see metrics like:
-   ![Alt text](/project-assets/step2_exposed_metrics.png?raw=true "exposed metrics")
+   ![Exposed Metrics](tuto-assets/step2_exposed_metrics.png)
 
 ---
 
