@@ -156,7 +156,7 @@ Build the docker image :
    - Go to **`http://localhost:9090`**
    - Click **Status → Targets**
    - Ensure **`http://localhost:8001/metrics`** is listed and **UP**.
-
+![Verify Prometheus](tuto-assets/step4_verify_prometheus.png)
 4. **Query your metrics in Prometheus:**
 
    - Enter `ml_model_accuracy` in the search bar and click **Execute**.
