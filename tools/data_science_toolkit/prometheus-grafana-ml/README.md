@@ -1,6 +1,6 @@
 # 📅 **Step-by-Step Guide: Monitoring ML Model Performance with Prometheus & Grafana**
 
-In this tutorial, we'll walk you through deploying a simple **sentiment analysis app** using **Streamlit** and setting up **Prometheus** and **Grafana** to monitor the model's performance in real time. By the end, you'll be able to track key metrics like **model accuracy**, **inference latency**, and **user feedback**.
+In this tutorial, we'll walk you through deploying a simple **sentiment analysis app** using **Streamlit** and setting up **Prometheus** and **Grafana** to monitor the model's performance in real time. By the end, you'll be able to track key metrics like **model accuracy**, and **number of requests**.
 
 ---
 
@@ -8,7 +8,9 @@ In this tutorial, we'll walk you through deploying a simple **sentiment analysis
 
 1. **Python 3.7+** installed
 2. **Docker** installed (for running Prometheus and Grafana)
-3. Basic understanding of Python and machine learning
+   - Install Docker by following the official guide: [https://www.docker.com/get-started/](https://www.docker.com/get-started/)
+   - 🔹 *Highly recommended:* After installing Docker, add the **Docker extension** in **VS Code** for easier container management.
+3. Basic understanding of Python and machine learning Basic understanding of Python and machine learning
 
 ---
 
@@ -49,15 +51,18 @@ prometheus-grafana-mlops
     # 2. Move the folder and remove unnecessary files
     mv tools/data_science_toolkit/prometheus-grafana-ml ../prometheus-grafana-ml
     cd ..
-    rm -rf Full_stacks_ai_course
+    rm -r Full_stacks_ai_course # Run as administrator
+
+    # 3. Move to the project repo
+    cd prometheus-grafana-ml
    ```
 
 2. **Create a virtual environment and install dependencies:**
 
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   pip install -r requirements.txt
+   python -m venv venv_tuto
+   source venv_tuto/bin/activate  # On Windows use `.\venv_tuto\Scripts\activate`
+   pip install streamlit plotly prometheus-client transformers torch
    ```
 
 ---
@@ -75,18 +80,7 @@ prometheus-grafana-mlops
 
 3. **Verify Prometheus metrics are exposed:**
    Visit **`http://localhost:8001/metrics`** to see metrics like:
-
-   ```
-   # HELP ml_model_accuracy User-reported model accuracy
-   # TYPE ml_model_accuracy gauge
-   ml_model_accuracy 0.85
-
-   # HELP ml_model_requests_total Total number of prediction requests
-   ml_model_requests_total 5
-
-   # HELP ml_model_latency_seconds Time taken for model inference
-   ml_model_latency_seconds_count 5
-   ```
+   ![Input Example](https://github.com/cartelgouabou/project-assets/blob/main/streamlit/step2_exposed_metrics.png?raw=true)
 
 ---
 
