@@ -77,6 +77,7 @@ prometheus-grafana-mlops
 
 2. **Check if the app is running:**
    Open your browser and go to **`http://localhost:8501`**.
+   ![Running App](tuto-assets/step1_running_app.png)
 
 3. **Verify Prometheus metrics are exposed:**
    Visit **`http://localhost:8001/metrics`** to see metrics like:
@@ -122,7 +123,7 @@ if feedback == "Yes":
 
 ## 🔧 **Step 4: Configure Prometheus**
 
-1. **Open `monitoring/prometheus.yml` and ensure it looks like this:**
+1. **Open `prometheus.yml` and ensure it looks like this:**
 
    ```yaml
    global:
@@ -135,16 +136,22 @@ if feedback == "Yes":
          # For Linux, use: ['localhost:8001']
    ```
 
-2. **Run the Bash Script `prometheus/run_prometheus.sh` from building and running prometheus container through the Dockerfile `prometheus/Dockerfile.prometheus`:**
-   
-   Make the script executable then runn:
+2. **Build and Run the Prometheus Container:**
 
+Ensure **Docker** is installed by running `docker --version`. If not, install it from [Docker's official guide](https://www.docker.com/get-started/).
+Build the docker image :
+**a. Build the Docker image:**
    ```bash
-   chmod +x prometheus/run_prometheus.sh
-   ./prometheus/Dockerfile.prometheus
+   docker build -t custom-prometheus -f monitoring/Dockerfile.prometheus .
    ```
 
-3. **Check if Prometheus is scraping metrics:**
+   **b. Run the Prometheus container:**
+   ```bash
+   docker run -d --name=prometheus -p 9090:9090 custom-prometheus
+   ```
+
+
+3. **Verify Prometheus is Running and Scraping Metrics:**
 
    - Go to **`http://localhost:9090`**
    - Click **Status → Targets**
