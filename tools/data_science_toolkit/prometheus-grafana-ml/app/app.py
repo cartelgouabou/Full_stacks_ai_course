@@ -42,7 +42,7 @@ if "yes_count" not in st.session_state:
 if "no_count" not in st.session_state:
     st.session_state.no_count = 0
 
-st.title("📊 Sentiment Analysis & Model Monitoring")
+st.title("Sentiment Analysis & Model Monitoring")
 
 # --- Section 1: Sentiment Prediction ---
 st.header("💬 Try It Out!")
@@ -103,7 +103,7 @@ if len(st.session_state.accuracy_history) > 0:
     st.success(f"📈 Model Accuracy: {avg_accuracy:.2%}")
 
 # --- Section 2: Accuracy Trend Over Time ---
-st.header("📊 Accuracy Monitoring")
+st.header("Accuracy Monitoring")
 
 if len(st.session_state.accuracy_history) > 1:
     # Convert timestamp to human-readable UTC datetime
@@ -133,7 +133,7 @@ else:
     st.info("Provide some feedback to see the accuracy trend.")
 
 # --- Section 3: Yes vs. No Feedback Count ---
-st.header("📊 Yes vs. No Feedback Count")
+st.header("Yes vs. No Feedback Count")
 
 if st.session_state.yes_count > 0 or st.session_state.no_count > 0:
     feedback_counts = {"Yes": st.session_state.yes_count, "No": st.session_state.no_count}
