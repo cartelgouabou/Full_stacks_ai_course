@@ -1,10 +1,10 @@
-# 📅 **Step-by-Step Guide: Monitoring ML Model Performance with Prometheus & Grafana**
+# **Step-by-Step Guide: Monitoring ML Model Performance with Prometheus & Grafana**
 
 In this tutorial, we'll walk you through deploying a simple **sentiment analysis app** using **Streamlit** and setting up **Prometheus** and **Grafana** to monitor the model's performance in real time. By the end, you'll be able to track key metrics like **model accuracy**, and **number of requests**.
 
 ---
 
-## 📊 **Prerequisites**
+## **Prerequisites**
 
 1. **Python 3.7+** installed
 2. **Docker** installed (for running Prometheus and Grafana)
@@ -14,7 +14,7 @@ In this tutorial, we'll walk you through deploying a simple **sentiment analysis
 
 ---
 
-## 📂 **GitHub Repository Structure**
+## **GitHub Repository Structure**
 
 ```
 prometheus-grafana-mlops
@@ -37,7 +37,7 @@ prometheus-grafana-mlops
 
 ---
 
-## 🔧 **Step 1: Clone the Repository & Install Dependencies**
+## **Step 1: Clone the Repository & Install Dependencies**
 Let’s start by cloning the repository and setting up your environment.
 1. **Clone the Repository Using Sparse Checkout:**
 This method will download only the relevant project files from the larger repository.
@@ -71,7 +71,7 @@ This method will download only the relevant project files from the larger reposi
 
 ---
 
-## 🌐 **Step 2: Run the Streamlit App**
+## **Step 2: Run the Streamlit App**
 Let’s launch the Streamlit app and verify that it’s exposing the necessary metrics.
 
 ### **Option 1: Run Locally**
@@ -115,7 +115,7 @@ Let’s launch the Streamlit app and verify that it’s exposing the necessary m
    Visit **`http://localhost:8001/metrics`** to ensure metrics are being tracked.
 ---
 
-## 🎓 **Step 3: Understand Key Parts of the App (Prometheus Integration)**
+##  **Step 3: Understand Key Parts of the App (Prometheus Integration)**
 
 Here’s a quick overview of how Prometheus metrics are integrated into the Streamlit app.
 
@@ -156,7 +156,7 @@ if feedback == "Yes":
 
 ---
 
-## 🔧 **Step 4: Configure Prometheus**
+## **Step 4: Configure Prometheus**
 
 Prometheus needs to know where to scrape the metrics from.
 
@@ -210,7 +210,7 @@ Ensure **Docker** is running before proceeding with `docker --version`.
 
 ---
 
-## 📈 **Step 5: Configure Grafana**
+## **Step 5: Configure Grafana**
 
 Grafana helps visualize the metrics collected by Prometheus.
 
@@ -246,7 +246,7 @@ Grafana helps visualize the metrics collected by Prometheus.
 ![Add Sources on Grafana](tuto-assets/step5_add_sources_on_grafana.png)
 ---
 
-## 📊 **Step 6: Create Dashboards in Grafana**
+## **Step 6: Create Dashboards in Grafana**
 
 ### **1. Create a New Dashboard:**
 
@@ -279,7 +279,7 @@ Grafana helps visualize the metrics collected by Prometheus.
 ![Add Query and custom viz on Grafana](tuto-assets/step6_add_query_customize_viz.png)
 ---
 
-## 📢 **Step 7: Set Alerts in Grafana**
+## **Step 7: Set Alerts in Grafana**
 
 1. **Go to your dashboard panel and click "Edit".**
 2. Navigate to the **"Alert"** tab and set conditions like:
@@ -298,9 +298,8 @@ Grafana helps visualize the metrics collected by Prometheus.
 ---
 
 
-## 🌟 **Conclusion**
+## **Conclusion**
 
 You’ve now set up a complete **ML model monitoring pipeline** using **Prometheus** and **Grafana**. This setup can be easily extended to track more complex models and integrate with **CI/CD** pipelines for **automated deployments and monitoring**.
 
-**Happy Monitoring!** 
 
