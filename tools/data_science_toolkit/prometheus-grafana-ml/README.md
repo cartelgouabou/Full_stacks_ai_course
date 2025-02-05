@@ -29,8 +29,10 @@ prometheus-grafana-mlops
 │   ├── step1_running_app/png    # Screenshot to ease the application of the tutorial
 │   ├── ...
 │   └── ...
-├── .gitignore               # Files/folders to ignore in Git
-└── README.md                # This guide
+├── Dockerfile.app      # Dockerfile for Streamlit app
+├── .gitignore          # Files/folders to ignore in Git
+├── requirements.txt    # Python dependencies for local setup
+└── README.md           # This guide
 ```
 
 ---
@@ -71,6 +73,9 @@ This method will download only the relevant project files from the larger reposi
 
 ## 🌐 **Step 2: Run the Streamlit App**
 Let’s launch the Streamlit app and verify that it’s exposing the necessary metrics.
+
+### **Option 1: Run Locally**
+
 1. **Start the Streamlit app:**
 
    ```bash
@@ -87,6 +92,27 @@ Let’s launch the Streamlit app and verify that it’s exposing the necessary m
    Visit **`http://localhost:8001/metrics`** to see the metrics exposed by the app:
    ![Exposed Metrics](tuto-assets/step2_exposed_metrics.png)
 
+### **Option 2: Run the App Using Docker**
+
+1. **Build the Docker image for the Streamlit app:**
+
+   ```bash
+   docker build -t streamlit-sentiment-app -f ./Dockerfile.app .
+   ```
+
+2. **Run the Streamlit app in a Docker container:**
+
+   ```bash
+   docker run -d -p 8501:8501 streamlit-sentiment-app
+   ```
+
+3. **Access the app in your browser:**
+
+   Go to **`http://localhost:8501`** to interact with the sentiment analysis app.
+
+4. **Verify Prometheus metrics are exposed:**
+
+   Visit **`http://localhost:8001/metrics`** to ensure metrics are being tracked.
 ---
 
 ## 🎓 **Step 3: Understand Key Parts of the App (Prometheus Integration)**
