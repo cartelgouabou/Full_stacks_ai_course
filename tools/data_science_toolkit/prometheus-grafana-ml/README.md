@@ -18,46 +18,48 @@ In this tutorial, we'll walk you through deploying a simple **sentiment analysis
 
 ```
 prometheus-grafana-mlops
-|├── app
-|   ├── app.py           # Streamlit app
-|   └── model.py         # Sentiment analysis model logic
-|├── grafana
-|   ├── Dockerfile.grafana  # Dockerfile for Grafana
-|   └── run_grafana.sh      # Bash script to build and run Grafana docker container
-|├── prometheus
-|   ├── prometheus.yml   # Prometheus configuration
-|   ├── Dockerfile.prometheus  # Dockerfile for Prometheus
-|   └── run_prometheus.sh      # Bash script to build and run Prometheus docker container
-|├── .gitignore
-|├── README.md
-|├── requirements.txt   # Python dependencies
-|└── run_pipeline.sh   # Bash script to run the entire pipeline
+├── app
+│   ├── app.py               # Streamlit app UI logic
+│   └── model.py             # Sentiment analysis model and prediction logic
+├── monitoring
+│   ├── prometheus.yml           # Prometheus configuration file
+│   ├── Dockerfile.prometheus    # Dockerfile to build Prometheus
+│   └── Dockerfile.grafana       # Dockerfile to build Grafana
+├── tuto-assets
+│   ├── step1_running_app/png    # Screenshot to ease the application of the tutorial
+│   ├── ...
+│   └── ...
+├── .gitignore               # Files/folders to ignore in Git
+└── README.md                # This guide
 ```
 
 ---
 
 ## 🔧 **Step 1: Clone the Repository & Install Dependencies**
-
-1. **Clone the repository:**
+Let’s start by cloning the repository and setting up your environment.
+1. **Clone the Repository Using Sparse Checkout:**
+This method will download only the relevant project files from the larger repository.
 
    ```bash
-   # 1. Clone the repository with sparse checkout mode in order to retrieve only the prometheus-grafana-ml repo
+   # 1. Clone the repository in sparse-checkout mode
     git clone --no-checkout https://github.com/cartelgouabou/Full_stacks_ai_course.git
     cd Full_stacks_ai_course
+
+   # 2. Initialize sparse-checkout and set the target folder
     git sparse-checkout init --cone
     git sparse-checkout set tools/data_science_toolkit/prometheus-grafana-ml
     git checkout main
 
-    # 2. Move the folder and remove unnecessary files
+    # 3. Move the project folder and clean up
     mv tools/data_science_toolkit/prometheus-grafana-ml ../prometheus-grafana-ml
     cd ..
-    rm -r Full_stacks_ai_course # Run as administrator
+    rm -r Full_stacks_ai_course # Run as administrator if needed
 
-    # 3. Move to the project repo
+    # 4. Navigate to the project directory
     cd prometheus-grafana-ml
    ```
 
-2. **Create a virtual environment and install dependencies:**
+2. **Set Up a Virtual Environment and Install Dependencies:**
 
    ```bash
    python -m venv venv_tuto
@@ -68,7 +70,7 @@ prometheus-grafana-mlops
 ---
 
 ## 🌐 **Step 2: Run the Streamlit App**
-
+Let’s launch the Streamlit app and verify that it’s exposing the necessary metrics.
 1. **Start the Streamlit app:**
 
    ```bash
@@ -76,19 +78,23 @@ prometheus-grafana-mlops
    ```
 
 2. **Check if the app is running:**
+
    Open your browser and go to **`http://localhost:8501`**.
    ![Running App](tuto-assets/step1_running_app.png)
 
 3. **Verify Prometheus metrics are exposed:**
-   Visit **`http://localhost:8001/metrics`** to see metrics like:
+
+   Visit **`http://localhost:8001/metrics`** to see the metrics exposed by the app:
    ![Exposed Metrics](tuto-assets/step2_exposed_metrics.png)
 
 ---
 
 ## 🎓 **Step 3: Understand Key Parts of the App (Prometheus Integration)**
 
-### **1. Starting Prometheus Metrics Server:**
+Here’s a quick overview of how Prometheus metrics are integrated into the Streamlit app.
 
+### **1. Starting Prometheus Metrics Server:**
+This exposes an HTTP endpoint for Prometheus to scrape metrics from.
 ```python
 from prometheus_client import start_http_server
 start_http_server(8001)  # Metrics available at http://localhost:8001/metrics
@@ -96,23 +102,26 @@ start_http_server(8001)  # Metrics available at http://localhost:8001/metrics
 
 ### **2. Defining Metrics:**
 
+We define counters and gauges to track the number of requests and model accuracy.
+
 ```python
 from prometheus_client import Gauge, Counter
 
-# Total number of requests
+# Tracks the total number of prediction requests
 request_count_metric = Counter("ml_model_requests_total", "Total number of prediction requests")
 
-# Model accuracy
+# Tracks user-reported model accuracy
 accuracy_metric = Gauge("ml_model_accuracy", "User-reported model accuracy")
 ```
 
 ### **3. Updating Metrics in the App:**
 
+Metrics are updated based on user interactions in the Streamlit app.
+
 ```python
 if st.button("Analyze Sentiment"):
     request_count_metric.inc()  # Increment request count
     label, confidence = predict_sentiment(user_input)
-    confidence_metric.observe(confidence)  # Record confidence score
 
 # Update accuracy based on user feedback
 if feedback == "Yes":
@@ -122,6 +131,8 @@ if feedback == "Yes":
 ---
 
 ## 🔧 **Step 4: Configure Prometheus**
+
+Prometheus needs to know where to scrape the metrics from.
 
 1. **Open `prometheus.yml` and ensure it looks like this:**
 
@@ -135,11 +146,17 @@ if feedback == "Yes":
          - targets: ['host.docker.internal:8001']  # For Windows/macOS
          # For Linux, use: ['localhost:8001']
    ```
+Explanation:
+
+- `scrape_interval: 5s`: Prometheus will scrape metrics from the app every 5 seconds.
+- `targets:`
+- - `host.docker.internal:8001` is used for Docker-to-host communication on Windows/macOS.
+- - On Linux, Docker can directly communicate with `localhost:8001`
 
 2. **Build and Run the Prometheus Container:**
 
-Ensure **Docker** is installed by running `docker --version`. If not, install it from [Docker's official guide](https://www.docker.com/get-started/).
-Build the docker image :
+Ensure **Docker** is running before proceeding with `docker --version`.
+
 **a. Build the Docker image:**
    ```bash
    docker build -t custom-prometheus -f monitoring/Dockerfile.prometheus .
@@ -156,27 +173,31 @@ Build the docker image :
    - Go to **`http://localhost:9090`**
    - Click **Status → Targets**
    - Ensure **`http://localhost:8001/metrics`** is listed and **UP**.
+
 ![Verify Prometheus](tuto-assets/step4_verify_prometheus.png)
-4. **Query your metrics in Prometheus:**
+
+4. **Query metrics in Prometheus:**
 
    - Enter `ml_model_accuracy` in the search bar and click **Execute**.
+
+   ![Query on Prometheus](tuto-assets/step4_query_on_prometheus.png)
 
 ---
 
 ## 📈 **Step 5: Configure Grafana**
 
-1. **Run the Bash Script `grafana/run_grafana.sh` from building and running grafana container through the Dockerfile `grafana/Dockerfile.grafana`:**
+Grafana helps visualize the metrics collected by Prometheus.
+
+1. **Build and Run the Grafana Container:**
    
-   Make the script executable then run:
-
+   **a. Build the Docker image:**
    ```bash
-   chmod +x grafana/run_grafana.sh
-   ./grafana/Dockerfile.grafana
+   docker build -t custom-grafana -f monitoring/Dockerfile.grafana .
    ```
-1. **Create a Dockerfile for Grafana (`monitoring/Dockerfile.grafana`):**
 
-   ```dockerfile
-   FROM grafana/grafana
+   **b. Run the Grafana container:**
+   ```bash
+   docker run -d --name=grafana -p 3000:3000 custom-grafana
    ```
 
 2. **Access Grafana:**
@@ -187,20 +208,24 @@ Build the docker image :
    - **Username:** `admin`
    - **Password:** `admin`
 
+![Access Grafana](tuto-assets/step5_access_grafana.png)
+
 4. **Add Prometheus as a Data Source:**
 
-   - Go to **Settings ⚙️ → Data Sources → Add Data Source**
+   - Go to **Connections → Data Sources → Add Data Source**
    - Choose **Prometheus**
    - Set URL to **`http://host.docker.internal:9090`** (or `http://localhost:9090` on Linux)
    - Click **Save & Test**
 
+![Add Sources on Grafana](tuto-assets/step5_add_sources_on_grafana.png)
 ---
 
 ## 📊 **Step 6: Create Dashboards in Grafana**
 
 ### **1. Create a New Dashboard:**
 
-- Go to **Create → Dashboard → Add New Panel**
+- Go to **Dashboard → Create dashboard → Add visualization**
+- Choose **prometheus source**
 
 ### **2. Add Queries for Metrics:**
 
@@ -223,8 +248,9 @@ Build the docker image :
 
 ### **4. Save the Dashboard:**
 
-- Click **Save** and name your dashboard **"ML Model Monitoring"**.
+- Click **Save** and name your dashboard **"Monitoring model accuracy"**.
 
+![Add Query and custom viz on Grafana](tuto-assets/step6_add_query_customize_viz.png)
 ---
 
 ## 📢 **Step 7: Set Alerts in Grafana**
@@ -238,7 +264,9 @@ Build the docker image :
    - **If inference latency exceeds 2 seconds:**
      ```promql
      ml_model_latency_seconds > 2
-     ```
+    ```
+
+![Add Alerts on Grafana](tuto-assets/step7_add_alerts.png)
 3. **Configure notifications** (Slack, email, etc.) using **Alertmanager**.
 
 ---
@@ -248,7 +276,5 @@ Build the docker image :
 
 You’ve now set up a complete **ML model monitoring pipeline** using **Prometheus** and **Grafana**. This setup can be easily extended to track more complex models and integrate with **CI/CD** pipelines for **automated deployments and monitoring**.
 
-Feel free to fork the repository and experiment with new metrics and dashboard configurations!
-
-**Happy Monitoring!** 🚀📊
+**Happy Monitoring!** 
 
