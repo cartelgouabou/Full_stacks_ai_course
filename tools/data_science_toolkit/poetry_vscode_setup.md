@@ -62,7 +62,10 @@ Redémarrez votre terminal si besoin, puis vérifiez l'installation :
 poetry --version
 ```
 
-## Ajouter Poetry au PATH (si `poetry` n’est pas reconnu)
+## 🛠️ Débug – Ajouter Poetry au PATH (si la commande n’est pas reconnue)
+> **À lire uniquement si** la commande `poetry --version` ne fonctionne pas après installation.
+> 
+> Sinon, vous pouvez **passer directement à la section suivante 👉 [2. Créer un projet Python avec Poetry](#2-créer-un-projet-python-avec-poetry)**
 
 Il se peut que `poetry` ne fonctionne pas immédiatement car **le répertoire contenant l'exécutable n'est pas dans votre** `PATH`.
 
@@ -158,7 +161,11 @@ poetry --version
 ````
 
 ---
-## Résoudre un problème : `poetry` non reconnu dans le terminal PowerShell de VS Code
+## 🛠️ Débug– Poetry non reconnu dans le terminal intégré de VS Code (PowerShell)
+
+  >**À lire uniquement si** `poetry --version` fonctionne dans PowerShell classique mais **pas dans le terminal intégré de VS Code**.
+  >
+  > Sinon, passez directement à la suite 👉 [2. Créer un projet Python avec Poetry](#2-créer-un-projet-python-avec-poetry)
 
 
 Il peut arriver qu'après installation `poetry` et la commande `poetry --version` fonctionne dans un terminal PowerShell classique, mais **elle ne fonctionne pas dans le terminal intégré de VS Code**. Ceci parce que VS Code n’utilise pas toujours les mêmes variables d’environnement (`PATH`) que votre système. Il se peut que le terminal intégré de VS Code **n’ait pas accès au dossier contenant** `poetry.exe`.
