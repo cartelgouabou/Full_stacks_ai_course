@@ -62,6 +62,101 @@ Redémarrez votre terminal si besoin, puis vérifiez l'installation :
 poetry --version
 ```
 
+## Ajouter Poetry au PATH (si `poetry` n’est pas reconnu)
+
+Il se peut que `poetry` ne fonctionne pas immédiatement car \*\*le répertoire contenant l'exécutable n'est pas dans votre \*\*\`\`.
+
+### 🚩 Symptôme :
+
+```powershell
+poetry : commande introuvable
+```
+
+### Solution sous Windows (avec PowerShell)
+
+#### 1. Vérifier manuellement le chemin d'installation
+Après l'installation, `poetry.exe` est souvent situé ici :
+
+```makefile
+C:\Users\<votre_nom>\AppData\Roaming\Python\Scripts\poetry.exe
+```
+
+Testez l'exécutable directement avec :
+
+Cela retournera un chemin similaire à :
+
+```powershell
+& "C:\Users\<votre_nom>\AppData\Roaming\Python\Scripts\poetry.exe" --version
+```
+Si cela fonctionne, passez à l'étape suivante.
+
+#### 2. Ajouter ce chemin au `PATH` (PowerShell)
+
+Vous avez deux options pour rendre poetry disponible en tant que commande globale :
+
+✅ Option A – Automatiquement via PowerShell
+
+```powershell
+[Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Users\<votre_nom>\AppData\Roaming\Python\Scripts", "User")
+```
+
+Remplacez <votre_nom> par votre nom d’utilisateur Windows si.
+
+🖱️ Option B – Manuellement via l’interface Windows
+1. Ouvrir le menu Démarrer → Rechercher "variables d’environnement"
+
+2. Cliquer sur "Variables d’environnement..."
+
+3. Dans la section "Variables utilisateur", sélectionner Path puis cliquer sur "Modifier"
+
+4. Cliquer sur "Nouveau" puis ajouter :
+
+```makefile
+C:\Users\<votre_nom>\AppData\Roaming\Python\Scripts
+```
+
+5. Valider tous les écrans
+
+Redémarrez ensuite PowerShell ou VS Code et testez :
+
+```powershell
+poetry --version
+```
+### Solution sous Linux / macOS
+
+#### 1.  Recherchez où Poetry est installé :
+
+```bash
+find $HOME -type f -name "poetry" 2>/dev/null
+```
+
+Cela peut retourner par exemple :
+
+```
+/home/<votre_nom>/.local/share/pypoetry/venv/bin/poetry
+```
+
+#### 2. Ajoutez le dossier contenant `poetry` à votre `PATH` :
+
+```bash
+export PATH="$HOME/.local/bin:$PATH"
+```
+Remplacer '$PATH' ci-dessus par le schemin obtenu precedemment
+
+#### 3. Rendez ce changement permanent :
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+# Fermez puis rouvrez votre terminal pour que les modifications prennent effet
+```
+Remplacer '$PATH' ci-dessus par le schemin obtenu precedemment
+
+#### 4. Vérifiez que Poetry fonctionne :
+
+````bash
+poetry --version
+````
+
 ---
 
 ## 2. Créer un projet Python avec Poetry
