@@ -83,26 +83,26 @@ C:\Users\<votre_nom>\AppData\Roaming\Python\Scripts\poetry.exe
 
 Testez l'exécutable directement avec :
 
-Cela retournera un chemin similaire à :
-
 ```powershell
 & "C:\Users\<votre_nom>\AppData\Roaming\Python\Scripts\poetry.exe" --version
 ```
+
 Si cela fonctionne, passez à l'étape suivante.
 
 #### 2. Ajouter ce chemin au `PATH` (PowerShell)
 
 Vous avez deux options pour rendre poetry disponible en tant que commande globale :
 
-✅ Option A – Automatiquement via PowerShell
+*Option A – Automatiquement via PowerShell**
 
 ```powershell
 [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Users\<votre_nom>\AppData\Roaming\Python\Scripts", "User")
 ```
 
-Remplacez <votre_nom> par votre nom d’utilisateur Windows si.
+Remplacez <votre_nom> par votre nom d’utilisateur Windows.
 
-🖱️ Option B – Manuellement via l’interface Windows
+**Option B – Manuellement via l’interface Windows**
+
 1. Ouvrir le menu Démarrer → Rechercher "variables d’environnement"
 
 2. Cliquer sur "Variables d’environnement..."
