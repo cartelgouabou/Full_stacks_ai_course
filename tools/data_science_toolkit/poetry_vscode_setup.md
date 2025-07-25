@@ -67,9 +67,9 @@ poetry --version
 > 
 > Sinon, vous pouvez **passer directement à la section suivante 👉 [2. Créer un projet Python avec Poetry](#2-créer-un-projet-python-avec-poetry)**
 
+
 Il se peut que `poetry` ne fonctionne pas immédiatement car **le répertoire contenant l'exécutable n'est pas dans votre** `PATH`.
 
-### 🚩 Symptôme :
 
 ```powershell
 poetry : commande introuvable
