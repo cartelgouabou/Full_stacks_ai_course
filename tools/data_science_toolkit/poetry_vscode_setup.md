@@ -64,7 +64,7 @@ poetry --version
 
 ## Ajouter Poetry au PATH (si `poetry` n’est pas reconnu)
 
-Il se peut que `poetry` ne fonctionne pas immédiatement car \*\*le répertoire contenant l'exécutable n'est pas dans votre \*\*\`\`.
+Il se peut que `poetry` ne fonctionne pas immédiatement car **le répertoire contenant l'exécutable n'est pas dans votre** `PATH`.
 
 ### 🚩 Symptôme :
 
