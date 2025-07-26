@@ -36,3 +36,9 @@ dataset_*/
 
 # Ignore all CSV files
 *.csv
+
+# ignore fichier indesirable repo mlflow_quickstart
+*/*/*/*/*/*/*/.venv
+*/*/*/*/*/*/.venv
+*/*/*/*/*/*/*/mlruns
+*/*/*/*/*/*/*/artefacts
