@@ -48,8 +48,8 @@ poetry add mlflow scikit-learn matplotlib pandas
 ```bash
 poetry run mlflow ui
 ```
-> -Cette commande lance l’interface web de MLflow en local, à partir de l’environnement virtuel géré par Poetry.
-> -Elle permet de visualiser les expériences, paramètres, métriques, artefacts et modèles enregistrés.
+> - Cette commande lance l’interface web de MLflow en local, à partir de l’environnement virtuel géré par Poetry.
+> - Elle permet de visualiser les expériences, paramètres, métriques, artefacts et modèles enregistrés.
 
 ---
 
@@ -75,8 +75,11 @@ mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_experiment("mlflow_quickstart")
 ```
 
-> - Connexion à l'instance MLflow locale
-> - Définition (ou création) d'une expérience nommée `mlflow_quickstart`. Cela permet de regrouper plusieurs runs du même projet dans l’interface MLflow.
+> - Cette configuration connecte votre script à une instance MLflow locale disponible à l’adresse `http://localhost:5000`.
+> - 
+> - En entreprise ou en environnement cloud, cette URI pourrait pointer vers un serveur distant, par exemple `https://mlflow.my-company-name.aws-region.amazonaws.com` ou une URL fournie par votre équipe DevOps. Il suffit de remplacer l'URI par celle du serveur MLflow utilisé dans votre infrastructure.
+> - 
+> - `set_experiment()` permet de regrouper vos expériences sous un même nom logique (ici : `mlflow_quickstart`).
 ---
 
 ### Étape 3 : Entraînement et suivi du modèle
@@ -96,14 +99,9 @@ with mlflow.start_run(run_name="RandomForest_baseline") as run:
     mlflow.log_metric("rmse", rmse)
 ```
 
-> - with mlflow.start_run(run_name="RandomForest_baseline"):
-> - Lance un nouveau run (session d’expérimentation) avec un nom explicite. Tout ce qui est loggué à l’intérieur sera lié à cette exécution.
->
->mlflow.log_param(...)
->Enregistre des hyperparamètres pour chaque run. Cela facilite la comparaison entre différentes configurations.
->
->mlflow.log_metric(...)
->Enregistre des métriques de performance. Ici, on suit la RMSE (erreur quadratique moyenne racine) pour évaluer le modèle.
+> - with mlflow.start_run(run_name="RandomForest_baseline"): Lance un nouveau run (session d’expérimentation) avec un nom explicite. Tout ce qui est loggué à l’intérieur sera lié à cette exécution.
+> - mlflow.log_param(...): Enregistre des hyperparamètres pour chaque run. Cela facilite la comparaison entre différentes configurations.
+> - mlflow.log_metric(...): Enregistre des métriques de performance. Ici, on suit la RMSE (erreur quadratique moyenne racine) pour évaluer le modèle.
 
 ---
 
@@ -126,7 +124,7 @@ plt.close()
 mlflow.log_artifact(fig_path)
 ```
 
->mlflow.log_artifact(fig_path) enregistre le fichier image comme artefact dans MLflow. C’est utile pour suivre l’évolution de la qualité du modèle avec différents paramètres ou versions.
+> - mlflow.log_artifact(fig_path) enregistre le fichier image comme artefact dans MLflow. C’est utile pour suivre l’évolution de la qualité du modèle avec différents paramètres ou versions.
 
 ---
 
@@ -148,15 +146,12 @@ mlflow.sklearn.log_model(
 )
 ```
 
->Ce bloc de code enregistre le modèle entraîné de manière complète et reproductible :
->
->input_example permet de montrer à quoi doivent ressembler les données d’entrée au moment du déploiement.
->
->signature enregistre la structure des entrées/sorties du modèle.
->
->registered_model_name permet d’ajouter automatiquement le modèle au Model Registry, sous le nom rf_regressor.
->
->Ce format facilite le partage, le déploiement (API, batch) et la comparaison entre différentes versions du > même modèle. Il fonctionne également avec d'autres frameworks (TensorFlow, PyTorch, XGBoost, etc.) en adaptant mlflow.<framework>.log_model().
+> - Ce bloc de code enregistre le modèle entraîné de manière complète et reproductible :
+> - 
+> - input_example permet de montrer à quoi doivent ressembler les données d’entrée au moment du déploiement.
+> - signature enregistre la structure des entrées/sorties du modèle.
+> - registered_model_name permet d’ajouter automatiquement le modèle au Model Registry, sous le nom rf_regressor.
+> - Ce format facilite le partage, le déploiement (API, batch) et la comparaison entre différentes versions du > même modèle. Il fonctionne également avec d'autres frameworks (TensorFlow, PyTorch, XGBoost, etc.) en adaptant mlflow.<framework>.log_model().
 ---
 
 ## 4. Script de prédiction : `load_and_predict.py`
@@ -177,15 +172,6 @@ loaded_model = load_model(model_uri)
 ### Étape 2 : Prédiction sur de nouvelles données
 
 ```python
-from mlflow.pyfunc import load_model
-
-model_uri = "models:/rf_regressor/1"
-loaded_model = load_model(model_uri)
-
-reloaded_preds = loaded_model.predict(X_test[:5])
-print("Prédictions :", reloaded_preds)
-```
-```python
 from sklearn.datasets import load_diabetes
 
 X, y = load_diabetes(return_X_y=True)
@@ -198,7 +184,6 @@ print("Predictions on first 5 samples:", predictions)
 ```bash
 poetry run python src/mlflow_quickstart/train.py
 ```
-
 
 
 ---
