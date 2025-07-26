@@ -63,6 +63,8 @@ poetry run mlflow ui
 ```bash
 poetry run python src/mlflow_quickstart/train_and_register.py
 ```
+![Capture UI MLflow](screenshots/run_train_register.png)
+> Exécution du script dans le terminal
 
 ### Étape 1 : Chargement des données
 
@@ -110,6 +112,8 @@ with mlflow.start_run(run_name="RandomForest_baseline") as run:
 > - mlflow.log_param(...): Enregistre des hyperparamètres pour chaque run. Cela facilite la comparaison entre différentes configurations.
 > - mlflow.log_metric(...): Enregistre des métriques de performance. Ici, on suit la RMSE (erreur quadratique moyenne racine) pour évaluer le modèle.
 
+![Capture UI MLflow](screenshots/ui_mlflow_menu_experiments.png)
+> Affichage du run nommé `RandomForest_baseline` dans l'expérience `mlflow_quickstart`
 ---
 
 ### Étape 4 : Logguer un artefact visuel
@@ -133,6 +137,8 @@ mlflow.log_artifact(fig_path)
 
 > - mlflow.log_artifact(fig_path) enregistre le fichier image comme artefact dans MLflow. C’est utile pour suivre l’évolution de la qualité du modèle avec différents paramètres ou versions.
 
+![Capture UI MLflow](screenshots/illustration_scatter_logguer.png)
+> L'artefact visuel est accessible dans l'onglet `Artifacts`
 ---
 
 ### Étape 5 : Enregistrement du modèle dans le Model Registry
@@ -158,6 +164,9 @@ mlflow.sklearn.log_model(
 > - signature enregistre la structure des entrées/sorties du modèle.
 > - registered_model_name permet d’ajouter automatiquement le modèle au Model Registry, sous le nom rf_regressor.
 > - Ce format facilite le partage, le déploiement (API, batch) et la comparaison entre différentes versions du > même modèle. Il fonctionne également avec d'autres frameworks (TensorFlow, PyTorch, XGBoost, etc.) en adaptant mlflow.<framework>.log_model().
+
+![Capture UI MLflow](screenshots/ui_mlflow_menu_models.png)
+> Le modèle rf_regressor est bien enregistré dans le Model Registry, version 1
 ---
 
 ## 4. Script de prédiction : `load_and_predict.py`
@@ -191,7 +200,10 @@ predictions = loaded_model.predict(X[:5])
 print("Predictions on first 5 samples:", predictions)
 ```
 
+![Capture UI MLflow](screenshots/illustration_model_reload.png)
+> Le modèle `rf_regressor` `version 1` a bel et bien pu être rechargé depuis `mlflow registry` pour effectuer la prédiction
 ---
+
 ## Structure du projet
 
 ```
