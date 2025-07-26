@@ -1,0 +1,23 @@
+[project]
+name = "mlflow-quickstart"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "cartel.gouabou",email = "cartelgouabou@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mlflow (>=3.1.4,<4.0.0)",
+    "matplotlib (>=3.10.3,<4.0.0)",
+    "scikit-learn (==1.5.0)",
+    "pandas (>=2.3.1,<3.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "mlflow_quickstart", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
