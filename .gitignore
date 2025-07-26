@@ -42,3 +42,6 @@ dataset_*/
 */*/*/*/*/*/.venv
 */*/*/*/*/*/*/mlruns
 */*/*/*/*/*/*/artefacts
+*/*/*/*/*/*/mlruns
+*/*/*/*/*/*/artefacts
+
