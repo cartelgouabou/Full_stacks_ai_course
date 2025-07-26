@@ -51,9 +51,18 @@ poetry run mlflow ui
 > - Cette commande lance l’interface web de MLflow en local, à partir de l’environnement virtuel géré par Poetry.
 > - Elle permet de visualiser les expériences, paramètres, métriques, artefacts et modèles enregistrés.
 
+![Capture UI MLflow](screenshots/interface_mlflow.png)
+> Interface web MLflow après lancement local
+
 ---
 
 ## 3. Script d'entraînement : `train_and_register.py`
+
+### Exécuter le script
+
+```bash
+poetry run python src/mlflow_quickstart/train_and_register.py
+```
 
 ### Étape 1 : Chargement des données
 
@@ -76,9 +85,7 @@ mlflow.set_experiment("mlflow_quickstart")
 ```
 
 > - Cette configuration connecte votre script à une instance MLflow locale disponible à l’adresse `http://localhost:5000`.
-> - 
 > - En entreprise ou en environnement cloud, cette URI pourrait pointer vers un serveur distant, par exemple `https://mlflow.my-company-name.aws-region.amazonaws.com` ou une URL fournie par votre équipe DevOps. Il suffit de remplacer l'URI par celle du serveur MLflow utilisé dans votre infrastructure.
-> - 
 > - `set_experiment()` permet de regrouper vos expériences sous un même nom logique (ici : `mlflow_quickstart`).
 ---
 
@@ -147,7 +154,6 @@ mlflow.sklearn.log_model(
 ```
 
 > - Ce bloc de code enregistre le modèle entraîné de manière complète et reproductible :
-> - 
 > - input_example permet de montrer à quoi doivent ressembler les données d’entrée au moment du déploiement.
 > - signature enregistre la structure des entrées/sorties du modèle.
 > - registered_model_name permet d’ajouter automatiquement le modèle au Model Registry, sous le nom rf_regressor.
@@ -155,6 +161,12 @@ mlflow.sklearn.log_model(
 ---
 
 ## 4. Script de prédiction : `load_and_predict.py`
+
+### Exécuter le script
+
+```bash
+poetry run python src/mlflow_quickstart/load_and_predict.py
+```
 
 ### Étape 1 : Chargement du modèle enregistré
 
@@ -179,13 +191,6 @@ predictions = loaded_model.predict(X[:5])
 print("Predictions on first 5 samples:", predictions)
 ```
 
-## Exécuter le script
-
-```bash
-poetry run python src/mlflow_quickstart/train.py
-```
-
-
 ---
 ## Structure du projet
 
@@ -207,7 +212,7 @@ mlflow_quickstart/
 | Action                    | Commande                                                        |
 | ------------------------- | --------------------------------------------------------------- |
 | Créer le projet           | `poetry new mlflow_quickstart --src`                            |
-| Activer l'environnement   | `poetry shell`                                                  |
+| Activer l'environnement   | `poetry install`                                                  |
 | Installer les dépendances | `poetry add mlflow scikit-learn matplotlib pandas`              |
 | Lancer l'UI MLflow        | `poetry run mlflow ui`                                          |
 | Exécuter l'entraînement   | `poetry run python src/mlflow_quickstart/train_and_register.py` |

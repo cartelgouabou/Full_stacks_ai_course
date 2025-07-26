@@ -53,7 +53,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 
 # Step 2: Set the MLflow experiment
 
-mlflow.set_experiment("mlflow_quickstart2")
+mlflow.set_experiment("mlflow_quickstarts")
 
 # Step 3: Train the model and track with MLflow
 
