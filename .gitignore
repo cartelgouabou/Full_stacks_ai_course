@@ -17,7 +17,8 @@ dataset_*/
 */.venv*/*
 */*/.venv*/*
 */*/*/.venv*/*
-
+*/*/*/*/*/*/*/.venv
+*/*/*/*/*/*/.venv
 
 # Ignore PowerPoint files
 *.ppt
