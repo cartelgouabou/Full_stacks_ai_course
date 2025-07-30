@@ -62,7 +62,7 @@ Redémarrez votre terminal si besoin, puis vérifiez l'installation :
 poetry --version
 ```
 
-## 🛠️ Débug – Ajouter Poetry au PATH (si la commande n’est pas reconnue)
+## Débug – Ajouter Poetry au PATH (si la commande n’est pas reconnue)
 > **À lire uniquement si** la commande `poetry --version` ne fonctionne pas après installation.
 > 
 > Sinon, vous pouvez **passer directement à la section suivante 👉 [2. Créer un projet Python avec Poetry](#2-créer-un-projet-python-avec-poetry)**
@@ -161,7 +161,7 @@ poetry --version
 ````
 
 ---
-## 🛠️ Débug– Poetry non reconnu dans le terminal intégré de VS Code (PowerShell)
+## Débug– Poetry non reconnu dans le terminal intégré de VS Code (PowerShell)
 
   >**À lire uniquement si** `poetry --version` fonctionne dans PowerShell classique mais **pas dans le terminal intégré de VS Code**.
   >
