@@ -41,6 +41,9 @@ poetry add mlflow scikit-learn matplotlib pandas
 > - Installation des bibliothèques nécessaires.
 > - Environnement virtuel créé dans le dossier `.venv` local.
 
+💡 **Astuce :** Si vous souhaitez configurer **Poetry** pour fonctionner de manière fluide avec **VS Code** (détection automatique de l’environnement virtuel, autocomplétion, etc.), j’ai rédigé un tutoriel dédié à ce sujet.  
+👉 [Voir le guide de configuration Poetry + VS Code](https://github.com/cartelgouabou/Full_stacks_ai_course/blob/main/tools/data_science_toolkit/poetry_vscode_setup.md)
+
 ---
 
 ## 2. Lancer l'interface web de MLflow
